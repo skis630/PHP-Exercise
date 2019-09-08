@@ -27,6 +27,7 @@
         }
 
         
+        // Extract columns
         $fname = array_column($data, "fname");
         $lname = array_column($data, "lname");
         $phone = array_column($data, "phone");
@@ -77,6 +78,13 @@
                 }\n" .
              "</script>";   
        
+        // Data for Summary footer
+        echo "<footer>\n <h3>Summary</h3>\n";
+        $city_count = array_count_values($city);
+        foreach($city_count as $city => $count) {
+            echo "<p><b>$city:</b> $count</p>\n";
+        }
+        echo "</footer>";
 
     ?>
 
