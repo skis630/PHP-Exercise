@@ -9,7 +9,7 @@
 <body>
     <?php
         $csv_name = $_GET["csv"];
-        $file = fopen($csv_name, 'r');
+        $file = fopen($csv_name, 'r') or die("Unable to open file");
         $data = array();
         $col_names = fgetcsv($file);
         $col_length = count($col_names);
@@ -43,16 +43,39 @@
             echo "<th>$value</th>\n";
         }
         for ($line = 0; $line < $data_size; $line++) {
-            echo "<tr>\n" .
-                        "<td>$fname[$line]</td>\n" .
-                        "<td>$lname[$line]</td>\n" .
-                        "<td>$phone[$line]</td>\n" .
-                        "<td>$st[$line]</td>\n" .
-                        "<td>$city[$line]</td>\n" .
-                        "<td>$zip[$line]</td>\n" .
-                  "</tr>\n";
+            echo "<tr onclick='displayPerson(event)' class='modal$line'>\n" .
+                        "<td class='modal$line'>$fname[$line]</td>\n" .
+                        "<td class='modal$line'>$lname[$line]</td>\n" .
+                        "<td class='modal$line'>$phone[$line]</td>\n" .
+                        "<td class='modal$line'>$st[$line]</td>\n" .
+                        "<td class='modal$line'>$city[$line]</td>\n" .
+                        "<td class='modal$line'>$zip[$line]</td>\n" .
+                  "</tr>\n"
+                  .
+                  "<div id='modal$line' class='modal' style='display:none;'>\n" .
+                        "<span class='modal$line' onclick='closeModal(event)'>&times;</span>" .
+                        "<h2>$fname[$line] $lname[$line]</h2>\n" .
+                        "<p>$phone[$line]</p>\n" . 
+                        "<p>$st[$line] $zip[$line] $city[$line]</p>\n" .
+
+                  "<div>";
         }
-        echo "</table>";
+        echo "</table>\n";
+        echo "<script>\n" . 
+                "function displayPerson(event) {
+                    let modal_id = event.target.className;
+                    console.log(modal_id);
+                    let modal = document.getElementById(modal_id);
+                    modal.style.display = 'block';
+                }\n" . 
+
+                "function closeModal(event) {
+                    let closeId = event.target.className;
+                    console.log(closeId);
+                    let modal = document.getElementById(closeId);
+                    modal.style.display = 'none';
+                }\n" .
+             "</script>";   
        
 
     ?>
